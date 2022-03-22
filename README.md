@@ -1,0 +1,2 @@
+# UWP_App_For_Clock
+自己电脑的win10升不了win11，但可以用win11的UI写软件哈哈

@@ -1,0 +1,2009 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClockApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:Custom="using:Windows.Globalization.NumberFormatting"
+    x:Class="ClockApp.ClockPage"
+    mc:Ignorable="d"
+    KeyboardAcceleratorPlacementMode="Hidden"
+    Loaded="ClockPage_Loaded">
+    <Page.Resources>
+        <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="XamlAutoFontFamily"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
+            <Setter Property="TextLineBounds" Value="Full"/>
+        </Style>
+        <Style x:Key="CaptionTextBlockStyle" BasedOn="{StaticResource BaseTextBlockStyle}" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+        <Style x:Key="ClockPageAppBarButtonStyle" TargetType="AppBarButton">
+            <Setter Property="Background" Value="{ThemeResource AppBarButtonBackground}"/>
+            <Setter Property="Foreground" Value="{ThemeResource AppBarButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource AppBarButtonBorderBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Width" Value="68"/>
+            <Setter Property="Height" Value="64"/>
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+            <Setter Property="AllowFocusOnInteraction" Value="False"/>
+            <Setter Property="KeyboardAcceleratorPlacementMode" Value="Hidden"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="AppBarButton">
+                        <Grid x:Name="Root" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ApplicationViewStates">
+                                    <VisualState x:Name="FullSize"/>
+                                    <VisualState x:Name="Compact">
+                                        <!--<Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextLabel" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>-->
+                                    </VisualState>
+                                    <VisualState x:Name="LabelOnRight">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentViewbox" Storyboard.TargetProperty="Margin">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarButtonContentViewboxMargin}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentRoot" Storyboard.TargetProperty="MinHeight">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarThemeCompactHeight}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextLabel" Storyboard.TargetProperty="(Grid.Row)">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextLabel" Storyboard.TargetProperty="(Grid.Column)">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextLabel" Storyboard.TargetProperty="TextAlignment">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Left"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextLabel" Storyboard.TargetProperty="Margin">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AppBarButtonTextLabelOnRightMargin}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="LabelCollapsed">
+                                        <!--<Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentRoot" Storyboard.TargetProperty="MinHeight">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarThemeCompactHeight}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextLabel" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>-->
+                                    </VisualState>
+                                    <VisualState x:Name="Overflow">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentRoot.MinHeight" Value="0"/>
+                                            <Setter Target="ContentViewbox.Visibility" Value="Collapsed"/>
+                                            <Setter Target="TextLabel.Visibility" Value="Collapsed"/>
+                                            <Setter Target="OverflowTextLabel.Visibility" Value="Visible"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowWithToggleButtons">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentRoot.MinHeight" Value="0"/>
+                                            <Setter Target="ContentViewbox.Visibility" Value="Collapsed"/>
+                                            <Setter Target="TextLabel.Visibility" Value="Collapsed"/>
+                                            <Setter Target="OverflowTextLabel.Visibility" Value="Visible"/>
+                                            <Setter Target="OverflowTextLabel.Margin" Value="38,0,12,0"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowWithMenuIcons">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentRoot.MinHeight" Value="0"/>
+                                            <Setter Target="ContentViewbox.HorizontalAlignment" Value="Left"/>
+                                            <Setter Target="ContentViewbox.VerticalAlignment" Value="Center"/>
+                                            <Setter Target="ContentViewbox.Width" Value="16"/>
+                                            <Setter Target="ContentViewbox.Height" Value="16"/>
+                                            <Setter Target="ContentViewbox.Margin" Value="12,0,12,0"/>
+                                            <Setter Target="TextLabel.Visibility" Value="Collapsed"/>
+                                            <Setter Target="OverflowTextLabel.Visibility" Value="Visible"/>
+                                            <Setter Target="OverflowTextLabel.Margin" Value="38,0,12,0"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowWithToggleButtonsAndMenuIcons">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentRoot.MinHeight" Value="0"/>
+                                            <Setter Target="ContentViewbox.HorizontalAlignment" Value="Left"/>
+                                            <Setter Target="ContentViewbox.VerticalAlignment" Value="Center"/>
+                                            <Setter Target="ContentViewbox.Width" Value="16"/>
+                                            <Setter Target="ContentViewbox.Height" Value="16"/>
+                                            <Setter Target="ContentViewbox.Margin" Value="38,0,12,0"/>
+                                            <Setter Target="TextLabel.Visibility" Value="Collapsed"/>
+                                            <Setter Target="OverflowTextLabel.Visibility" Value="Visible"/>
+                                            <Setter Target="OverflowTextLabel.Margin" Value="76,0,12,0"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="OverflowTextLabel"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="Root.Background" Value="{ThemeResource ButtonBackgroundPointerOver}"/>
+                                            <Setter Target="Root.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}"/>
+                                            <Setter Target="AppBarButtonInnerBorder.Stroke" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}"/>
+                                            <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                            <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                            <Setter Target="OverflowTextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Foreground" Value="{ThemeResource AppBarButtonKeyboardAcceleratorTextForegroundPointerOver}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="OverflowTextLabel"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="Root.Background" Value="{ThemeResource ButtonBackgroundPressed}"/>
+                                            <Setter Target="Root.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushPressed}"/>
+                                            <Setter Target="AppBarButtonInnerBorder.Stroke" Value="{ThemeResource AppBarButtonBorderBrushPressed}"/>
+                                            <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                            <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                            <Setter Target="OverflowTextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Foreground" Value="{ThemeResource AppBarButtonKeyboardAcceleratorTextForegroundPressed}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="OverflowTextLabel"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="Root.Background" Value="{ThemeResource AppBarButtonBackgroundDisabled}"/>
+                                            <Setter Target="Root.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushDisabled}"/>
+                                            <Setter Target="AppBarButtonInnerBorder.Stroke" Value="{ThemeResource AppBarButtonBorderBrushDisabled}"/>
+                                            <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundDisabled}"/>
+                                            <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundDisabled}"/>
+                                            <Setter Target="OverflowTextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundDisabled}"/>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Foreground" Value="{ThemeResource AppBarButtonKeyboardAcceleratorTextForegroundDisabled}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowNormal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowPointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="Root.Background" Value="{ThemeResource AppBarButtonBackgroundPointerOver}"/>
+                                            <Setter Target="Root.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}"/>
+                                            <Setter Target="AppBarButtonInnerBorder.Stroke" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}"/>
+                                            <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                            <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                            <Setter Target="OverflowTextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}"/>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Foreground" Value="{ThemeResource AppBarButtonKeyboardAcceleratorTextForegroundPointerOver}"/>
+                                            <Setter Target="SubItemChevron.Foreground" Value="{ThemeResource AppBarButtonSubItemChevronForegroundPointerOver}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowPressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="Root.Background" Value="{ThemeResource AppBarButtonBackgroundPressed}"/>
+                                            <Setter Target="Root.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushPressed}"/>
+                                            <Setter Target="AppBarButtonInnerBorder.Stroke" Value="{ThemeResource AppBarButtonBorderBrushPressed}"/>
+                                            <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                            <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                            <Setter Target="OverflowTextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}"/>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Foreground" Value="{ThemeResource AppBarButtonKeyboardAcceleratorTextForegroundPressed}"/>
+                                            <Setter Target="SubItemChevron.Foreground" Value="{ThemeResource AppBarButtonSubItemChevronForegroundPressed}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="ContentRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="OverflowSubMenuOpened">
+                                        <VisualState.Setters>
+                                            <Setter Target="Root.Background" Value="{ThemeResource AppBarButtonBackgroundSubMenuOpened}"/>
+                                            <Setter Target="Root.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushSubMenuOpened}"/>
+                                            <Setter Target="AppBarButtonInnerBorder.Stroke" Value="{ThemeResource AppBarButtonBorderBrushSubMenuOpened}"/>
+                                            <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundSubMenuOpened}"/>
+                                            <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundSubMenuOpened}"/>
+                                            <Setter Target="OverflowTextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundSubMenuOpened}"/>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Foreground" Value="{ThemeResource AppBarButtonKeyboardAcceleratorTextForegroundSubMenuOpened}"/>
+                                            <Setter Target="SubItemChevron.Foreground" Value="{ThemeResource AppBarButtonSubItemChevronForegroundSubMenuOpened}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentRoot"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="InputModeStates">
+                                    <VisualState x:Name="InputModeDefault"/>
+                                    <VisualState x:Name="TouchInputMode">
+                                        <VisualState.Setters>
+                                            <Setter Target="OverflowTextLabel.Padding" Value="{ThemeResource AppBarButtonOverflowTextTouchMargin}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="GameControllerInputMode">
+                                        <VisualState.Setters>
+                                            <Setter Target="OverflowTextLabel.Padding" Value="{ThemeResource AppBarButtonOverflowTextTouchMargin}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="KeyboardAcceleratorTextVisibility">
+                                    <VisualState x:Name="KeyboardAcceleratorTextCollapsed"/>
+                                    <VisualState x:Name="KeyboardAcceleratorTextVisible">
+                                        <VisualState.Setters>
+                                            <Setter Target="KeyboardAcceleratorTextLabel.Visibility" Value="Visible"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FlyoutStates">
+                                    <VisualState x:Name="NoFlyout"/>
+                                    <VisualState x:Name="HasFlyout"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="AppBarButtonInnerBorder" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                            <Grid x:Name="ContentRoot" MinHeight="{ThemeResource AppBarThemeMinHeight}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Viewbox x:Name="ContentViewbox" AutomationProperties.AccessibilityView="Raw" HorizontalAlignment="Stretch" Height="{ThemeResource AppBarButtonContentHeight}" Margin="{ThemeResource AppBarButtonContentViewboxCollapsedMargin}">
+                                    <ContentPresenter x:Name="Content" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}"/>
+                                </Viewbox>
+                                <TextBlock x:Name="TextLabel" AutomationProperties.AccessibilityView="Raw" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="12" Margin="{ThemeResource AppBarButtonTextLabelMargin}" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap" Text="{TemplateBinding Label}"/>
+                                <TextBlock x:Name="OverflowTextLabel" AutomationProperties.AccessibilityView="Raw" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" HorizontalAlignment="Stretch" Margin="12,0,12,0" Padding="{ThemeResource AppBarButtonOverflowTextLabelPadding}" TextAlignment="Left" TextWrapping="NoWrap" Text="{TemplateBinding Label}" TextTrimming="Clip" VerticalAlignment="Center" Visibility="Collapsed"/>
+                                <TextBlock x:Name="KeyboardAcceleratorTextLabel" AutomationProperties.AccessibilityView="Raw" Grid.Column="1" Foreground="{ThemeResource AppBarButtonKeyboardAcceleratorTextForeground}" HorizontalAlignment="Right" Margin="24,0,12,0" MinWidth="{Binding TemplateSettings.KeyboardAcceleratorTextMinWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}" Style="{ThemeResource CaptionTextBlockStyle}" Text="{TemplateBinding KeyboardAcceleratorTextOverride}" VerticalAlignment="Center" Visibility="Collapsed"/>
+                                <FontIcon x:Name="SubItemChevron" AutomationProperties.AccessibilityView="Raw" Grid.Column="2" Foreground="{ThemeResource MenuFlyoutSubItemChevron}" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Glyph="&#xE0E3;" Margin="12,0,12,0" MirroredWhenRightToLeft="True" Visibility="Collapsed"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ClockDialEveryFiveSecondsLineStyle" TargetType="Line">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="8"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="X1" Value="4.5"/>
+            <Setter Property="X2" Value="4.5"/>
+            <Setter Property="Y1" Value="16"/>
+            <Setter Property="Y2" Value="9"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+        </Style>
+        <Style x:Key="ClockDialEverySecondLineStyle" TargetType="Line">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="8"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="X1" Value="4.5"/>
+            <Setter Property="X2" Value="4.5"/>
+            <Setter Property="Y1" Value="12.5"/>
+            <Setter Property="Y2" Value="12.5"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+            <Setter Property="Opacity" Value="0"/>
+        </Style>
+        <MenuFlyout x:Key="clockPageOperationFlyout" Placement="TopEdgeAlignedRight">
+            <MenuFlyoutItem x:Name="numOrDialSwitch" Text="切换视图"
+                            Click="NumOrDialSwitch_Click">
+                <MenuFlyoutItem.Icon>
+                    <SymbolIcon Symbol="Switch"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSubItem x:Name="backgroundChange" Text="切换背景">
+                <MenuFlyoutSubItem.Icon>
+                    <FontIcon Glyph="&#xEB9F;"/>
+                </MenuFlyoutSubItem.Icon>
+                <MenuFlyoutItem x:Name="gradientColorBackground" Text="更换渐变色背景"
+                                Click="GradientColorBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <controls:ImageIcon Source="/Assets/User/PNGIcon/渐变色.png" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem x:Name="solidColorBackground" Text="更换纯色背景"
+                                Click="SolidColorBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE747;"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem x:Name="photoBackground" Text="更换图片背景"
+                                Click="PhotoBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xEB9F;"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem x:Name="multiPhotosBackground" Text="更换多图背景"
+                                Click="MultiPhotosBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="Pictures"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem x:Name="bingPhotoBackground" Text="必应壁纸"
+                                Click="BingPhotoBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <controls:ImageIcon Source="/Assets/User/PNGIcon/必应图标.png"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem x:Name="unsplashPhotoBackground" Text="Unsplash壁纸"
+                                Click="UnsplashPhotoBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <controls:ImageIcon Source="/Assets/User/PNGIcon/unsplash图标.png"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem x:Name="resetBackground" Text="重置背景"
+                                Click="ResetBackground_Click">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="RepeatAll"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyoutSubItem>
+            <MenuFlyoutItem x:Name="fullScreenSwitch" Text="进入全屏"
+                            Click="FullScreenSwitch_Click">
+                <MenuFlyoutItem.Icon>
+                    <SymbolIcon Symbol="FullScreen"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+        <Storyboard x:Name="backgroundChangeStoryboard" Completed="BackgroundChangeStoryboard_Completed">
+            <DoubleAnimation Duration="0:0:1.5" Storyboard.TargetName="oldBackground" From="1" To="0" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+            <DoubleAnimation Duration="0:0:1.5" Storyboard.TargetName="newBackground" From="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+        </Storyboard>
+    </Page.Resources>
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator IsEnabled="True" Key="Escape" Invoked="KeyboardAccelerator_Invoked"/>
+    </Page.KeyboardAccelerators>
+
+    <Grid x:Name="clockPageGrid">
+        <Grid x:Name="oldBackground" Visibility="Collapsed"/>
+        <Grid x:Name="newBackground" Visibility="Collapsed"/>
+        <Grid x:Name="clockDialGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Height="450" Width="450" Visibility="Collapsed">
+            <Grid.Resources>
+                <Storyboard x:Name="clockDialGridStoryIn">
+                    <FadeInThemeAnimation TargetName="clockDialGrid"/>
+                </Storyboard>
+                <Storyboard x:Name="clockDialGridStoryOut">
+                    <FadeOutThemeAnimation x:Name="clockDialGridFadeOut" TargetName="clockDialGrid"
+                                           Completed="ClockDialGridFadeOut_Completed"/>
+                </Storyboard>
+            </Grid.Resources>
+            <Ellipse x:Name="clockDial" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Ellipse.Fill>
+                    <AcrylicBrush BackgroundSource="Backdrop" FallbackColor="White" TintOpacity="0.2" TintColor="White" TintLuminosityOpacity="0.5"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Line x:Name="line0" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard0">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line0" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line0" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="0"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line5" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard5">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line5" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line5" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="30"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line10" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard10">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line10" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line10" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="60"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line15" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard15">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line15" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line15" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="90"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line20" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard20">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line20" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line20" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="120"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line25" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard25">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line25" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line25" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="150"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line30" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard30">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line30" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line30" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line35" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard35">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line35" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line35" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="210"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line40" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard40">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line40" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line40" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="240"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line45" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard45">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line45" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line45" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="270"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line50" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard50">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line50" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line50" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="300"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line55" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard55">
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line55" Storyboard.TargetProperty="(Line.Y1)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="16">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetName="line55" Storyboard.TargetProperty="(Line.Y2)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="12.5"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.7000000" Value="9">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <ElasticEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEveryFiveSecondsLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="330"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line1" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard1">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line1" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="6"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line2" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard2">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line2" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="12"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line3" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard3">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line3" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="18"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line4" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard4">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line4" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="24"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line6" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard6">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line6" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="36"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line7" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard7">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line7" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="42"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line8" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard8">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line8" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="48"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line9" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard9">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line9" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="54"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line11" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard11">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line11" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="66"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line12" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard12">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line12" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="72"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line13" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard13">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line13" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="78"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line14" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard14">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line14" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="84"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line16" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard16">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line16" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="96"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line17" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard17">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line17" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="102"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line18" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard18">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line18" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="108"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line19" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard19">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line19" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="114"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line21" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard21">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line21" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="126"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line22" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard22">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line22" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="132"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line23" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard23">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line23" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="138"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line24" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard24">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line24" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="144"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line26" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard26">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line26" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="156"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line27" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard27">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line27" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="162"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line28" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard28">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line28" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="168"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line29" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard29">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line29" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="174"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line31" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard31">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line31" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="186"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line32" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard32">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line32" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="192"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line33" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard33">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line33" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="198"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line34" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard34">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line34" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="204"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line36" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard36">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line36" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="216"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line37" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard37">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line37" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="222"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line38" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard38">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line38" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="228"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line39" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard39">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line39" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="234"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line41" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard41">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line41" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="246"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line42" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard42">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line42" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="252"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line43" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard43">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line43" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="258"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line44" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard44">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line44" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="264"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line46" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard46">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line46" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="276"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line47" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard47">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line47" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="282"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line48" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard48">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line48" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="288"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line49" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard49">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line49" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="294"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line51" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard51">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line51" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="306"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line52" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard52">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line52" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="312"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line53" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard53">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line53" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="318"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line54" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard54">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line54" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="324"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <Line x:Name="line56" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard56">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line56" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="336"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line57" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard57">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line57" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="342"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line58" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard58">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line58" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="348"/>
+                </Line.RenderTransform>
+            </Line>
+            <Line x:Name="line59" RenderTransformOrigin="0.5,0.5">
+                <Line.Resources>
+                    <Storyboard x:Name="SecondsStoryboard59">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="line59" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.2500000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <PowerEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Line.Resources>
+                <Line.Style>
+                    <StaticResource ResourceKey="ClockDialEverySecondLineStyle"/>
+                </Line.Style>
+                <Line.RenderTransform>
+                    <CompositeTransform Rotation="354"/>
+                </Line.RenderTransform>
+            </Line>
+
+            <TextBlock Text="3" FontSize="80" FontWeight="Bold" Margin="0,0,20,10" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBlock Text="6" FontSize="80" FontWeight="Bold" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <TextBlock Text="9" FontSize="80" FontWeight="Bold" Margin="25,0,0,10" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBlock Text="12" FontSize="80" FontWeight="Bold" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <Grid x:Name="handGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Line x:Name="hourHand" Grid.Column="1" Stroke="Green" Fill="Green"
+                      Margin="0,80,0,-10" Y2="-1"
+                      StrokeThickness="20" RenderTransformOrigin="0.5, 0.934"
+                      StrokeEndLineCap="Triangle" StrokeStartLineCap="Round" Stretch="Fill">
+                    <Line.RenderTransform>
+                        <CompositeTransform Rotation="0"/>
+                    </Line.RenderTransform>
+                </Line>
+                <Line x:Name="minuteHand" Grid.Column="1" Stroke="Blue" Fill="Blue"
+                      Margin="0,50,0,-7" Y2="-1"
+                      StrokeThickness="14" RenderTransformOrigin="0.485, 0.958"
+                      StrokeEndLineCap="Triangle" StrokeStartLineCap="Round" Stretch="Fill">
+                    <Line.RenderTransform>
+                        <CompositeTransform Rotation="0"/>
+                    </Line.RenderTransform>
+                </Line>
+                <Line x:Name="secondHand" Grid.Column="1" Stroke="Red" Fill="Red"
+                      Margin="0,30,0,-16" Y2="-1"
+                      StrokeThickness="6" RenderTransformOrigin="0.47,0.922"
+                      StrokeEndLineCap="Triangle" StrokeStartLineCap="Round" Stretch="Fill">
+                    <Line.Resources>
+                        <Storyboard x:Name="secondChangeStoryBoard"
+                                    Completed="SecondChangeStoryBoard_Completed">
+                            <DoubleAnimation x:Name="secondChangeAnimation" Duration="00:00:00.1500000" Storyboard.TargetName="secondHand" Storyboard.TargetProperty="(Line.RenderTransform).(CompositeTransform.Rotation)"/>
+                        </Storyboard>
+                    </Line.Resources>
+                    <Line.RenderTransform>
+                        <CompositeTransform Rotation="0"/>
+                    </Line.RenderTransform>
+                </Line>
+            </Grid>
+        </Grid>
+        <Grid x:Name="clockNumGrid" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="20" Padding="10" Width="220" Visibility="Visible">
+            <Grid.Resources>
+                <Storyboard x:Name="clockNumGridStoryIn">
+                    <FadeInThemeAnimation TargetName="clockNumGrid"/>
+                </Storyboard>
+                <Storyboard x:Name="clockNumGridStoryOut">
+                    <FadeOutThemeAnimation x:Name="clockNumGridFadeOut" TargetName="clockNumGrid"
+                                           Completed="ClockNumGridFadeOut_Completed"/>
+                </Storyboard>
+            </Grid.Resources>
+            <Grid.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" FallbackColor="White" TintOpacity="0.2" TintColor="White" TintLuminosityOpacity="0.5"/>
+            </Grid.Background>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <TextBlock x:Name="hourTextBlockTen" Text="0" Foreground="Black" Width="50" FontSize="120" FontFamily="Agency FB" TextAlignment="Right" VerticalAlignment="Bottom"/>
+                <TextBlock x:Name="hourTextBlockSingle" Text="0" Foreground="Black" Width="50" FontSize="120" FontFamily="Agency FB" TextAlignment="Right" VerticalAlignment="Bottom"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock x:Name="minuteTextBlockTen" Text="0" Foreground="Black" Width="50" FontSize="120" FontFamily="Agency FB" TextAlignment="Right" VerticalAlignment="Top"/>
+                <TextBlock x:Name="minuteTextBlockSingle" Text="0" Foreground="Black" Width="50" FontSize="120" FontFamily="Agency FB" TextAlignment="Right" VerticalAlignment="Top"/>
+            </StackPanel>
+            <StackPanel Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Width="30">
+                <TextBlock x:Name="secondTextBlockTen" Text="0" Foreground="Black" FontSize="35" FontFamily="Agency FB" TextAlignment="Right" Width="15"/>
+                <TextBlock x:Name="secondTextBlockSingle" Text="0" Foreground="Black" FontSize="35" FontFamily="Agency FB" TextAlignment="Right" Width="15"/>
+            </StackPanel>
+            <Button Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center" MaxWidth="90" Padding="4,0" BorderThickness="0" Margin="0,0,0,10" Background="Transparent">
+                <Button.Flyout>
+                    <Flyout x:Name="temperatureLocationFlyout">
+                        <StackPanel Orientation="Horizontal" CornerRadius="10">
+                            <ComboBox x:Name="temperatureLocationProvinceComboBox" Width="110" Header="省"
+                                      SelectionChanged="TemperatureLocationProvinceComboBox_SelectionChanged"/>
+                            <ComboBox x:Name="temperatureLocationCityComboBox" Width="110" Header="市/区"
+                                      SelectionChanged="TemperatureLocationCityComboBox_SelectionChanged"/>
+                            <ComboBox x:Name="temperatureLocationBlockComboBox" Width="110" Header="县/区"
+                                      SelectionChanged="TemperatureLocationBlockComboBox_SelectionChanged"/>
+                            <Button x:Name="temperatureLocationConfirmButton" Content="确定" VerticalAlignment="Bottom"
+                                    Click="TemperatureLocationConfirmButton_Click"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <TextBlock x:Name="temperatureLocationTextBlock" Style="{StaticResource BodyTextBlockStyle}" Foreground="Black" Text="Null" MaxLines="2" FontSize="14"/>
+            </Button>
+            <StackPanel Grid.Row="1" Grid.Column="0" Padding="16,15,0,0">
+                <TextBlock x:Name="dateTextBlockYear" Text="2022" Foreground="Black" FontSize="28" FontFamily="FZLanTingHeiS-UL-GB" FontWeight="Bold"/>
+                <TextBlock x:Name="dateTextBlockMonthDay" Text="0222" Foreground="Black" FontSize="28" FontFamily="FZLanTingHeiS-UL-GB" FontWeight="Bold"/>
+                <Line Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="75" Margin="0,4"/>
+                <TextBlock x:Name="dateTextBlockDayOfWeek" Text="TUE" Foreground="Black" FontSize="28" FontFamily="FZLanTingHeiS-UL-GB" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Padding="0,16,0,0">
+                <Grid>
+                    <TextBlock x:Name="temperatureTextBlockReal" Text="NA" Foreground="Black" FontSize="45" Margin="0,0,20,0" FontFamily="FZLanTingHeiS-UL-GB" TextAlignment="Right" FontWeight="Bold"/>
+                    <TextBlock Text="℃" Foreground="Black" FontSize="20" FontFamily="FZLanTingHeiS-UL-GB" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                </Grid>
+                <Grid ColumnSpacing="5" Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="temperatureTextBlockWea" Grid.Column="0" Text="N/A" Foreground="Black" FontSize="14" FontFamily="FZLanTingHeiS-UL-GB" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <PathIcon x:Name="temperatureTextBlockWeaIcon" Grid.Column="1" Height="24" Width="24" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <PathIcon.RenderTransform>
+                            <CompositeTransform ScaleX="1.25" ScaleY="1.25"/>
+                        </PathIcon.RenderTransform>
+                    </PathIcon>
+                </Grid>
+                <TextBlock FontSize="16" Foreground="Black" FontFamily="FZLanTingHeiS-UL-GB" FontWeight="Bold" HorizontalAlignment="Right">
+                    <Run x:Name="temperatureTextBlockTem1" Text="N"/>
+                    <Run Text="/"/>
+                    <Run x:Name="temperatureTextBlockTem2" Text="A"/>
+                    <Run Text="℃"/>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="Transparent" Margin="0,0,20,20">
+            <Button x:Name="clockPageWebBackgroundInfoButton" Margin="5,0" Visibility="Collapsed"
+                    Click="ClockPageWebBackgroundInfoButton_Click">
+                <Grid ColumnSpacing="5" Margin="4,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="&#xE82F;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBlock Grid.Column="0" Text="&#xE915;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="20" RenderTransformOrigin="0.5,0.5" Visibility="{Binding Visibility, ElementName=clockPageWebBackgroundInfoStackPanel}">
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform TranslateX="-0.5" TranslateY="-3"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Grid.Column="1" x:Name="webPhotoHeadline" FontSize="16" Margin="0,5"/>
+                </Grid>
+            </Button>
+            <Button x:Name="clockPageOperationCollectionButton" Height="44.8" Flyout="{StaticResource clockPageOperationFlyout}"
+                    Click="ClockPageOperationCollectionButton_Click">
+                <SymbolIcon Symbol="More"/>
+            </Button>
+        </StackPanel>
+        <StackPanel x:Name="clockPageWebBackgroundInfoStackPanel" Background="#BFFFFFFF" Padding="20,10,20,16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,74.8" Width="300" CornerRadius="4" Visibility="Collapsed">
+            <TextBlock x:Name="webPhotoTitle" FontSize="30" FontWeight="Bold" Foreground="Black" TextWrapping="Wrap"/>
+            <Line Stroke="Black" StrokeThickness="3" X1="0" X2="260" Y1="0" Y2="0" HorizontalAlignment="Center" Margin="0,10"/>
+            <TextBlock x:Name="webPhotoDescription" FontSize="16" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
+            <TextBlock x:Name="webPhotoCopyright" FontSize="12" Foreground="Black" Opacity="0.5" TextWrapping="Wrap"/>
+            <HyperlinkButton x:Name="webPhotoHyperlinkButton" Padding="0,5,2,5"
+                             Click="WebPhotoHyperlinkButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <controls:ImageIcon x:Name="webPhotoUriIcon" Height="16"/>
+                    <TextBlock x:Name="webPhotoUriText" FontSize="12" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </HyperlinkButton>
+        </StackPanel>
+        <StackPanel x:Name="commonColorPickerStackPanel" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Visibility="Collapsed" Padding="20" CornerRadius="10,0,0,10"
+                    Background="White" BorderBrush="#FFBBBBBB" BorderThickness="1">
+            <StackPanel.Resources>
+                <Storyboard x:Name="commonColorPickerInStoryboard">
+                    <RepositionThemeAnimation x:Name="commonColorPickerInAnimation" TargetName="commonColorPickerStackPanel" Duration="00:00:1" FromHorizontalOffset="354.4"/>
+                </Storyboard>
+                <Storyboard x:Name="commonColorPickerOutStoryboard">
+                    <RepositionThemeAnimation x:Name="commonColorPickerOutAnimation" TargetName="commonColorPickerStackPanel" Duration="00:00:1" FromHorizontalOffset="-354.4"
+                                              Completed="RepositionThemeAnimation_Completed"/>
+                </Storyboard>
+            </StackPanel.Resources>
+            <StackPanel Orientation="Horizontal">
+                <controls:ColorPicker x:Name="commonColorPicker" ColorChanged="CommonColorPicker_ColorChanged"/>
+                <Grid x:Name="gradientColorPartGrid" Visibility="Collapsed" Width="200" Margin="10,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="140"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border  Height="120" Width="180" BorderBrush="Black" BorderThickness="1">
+                        <Rectangle x:Name="gradientColorTestRectangle" Height="120" Width="180" Fill="WhiteSmoke"/>
+                    </Border>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="130.4"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="开始点坐标" Grid.Row="0" Margin="0.5" Grid.ColumnSpan="5"/>
+                        <TextBlock Text="X" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <controls:NumberBox x:Name="startPointX" Value="0.5" Maximum="1" Minimum="0" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1"
+                                            ValueChanged="NumberBoxValueChanged"/>
+                        <TextBlock Text="Y" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <controls:NumberBox x:Name="startPointY" Value="0.5" Maximum="1" Minimum="0" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="4"
+                                            ValueChanged="NumberBoxValueChanged"/>
+                        <TextBlock Text="结束点坐标" Grid.Row="2" Margin="0,5" Grid.ColumnSpan="5"/>
+                        <TextBlock Text="X" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <controls:NumberBox x:Name="endPointX" Value="0.5" Maximum="1" Minimum="0" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="1"
+                                            ValueChanged="NumberBoxValueChanged"/>
+                        <TextBlock Text="Y" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <controls:NumberBox x:Name="endPointY" Value="0.5" Maximum="1" Minimum="0" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="4"
+                                            ValueChanged="NumberBoxValueChanged"/>
+                        <controls:NumberBox x:Name="offsetNumberBox" Value="0.5" Header="偏移量" Maximum="1" Minimum="0" HorizontalAlignment="Stretch" Grid.Row="4" Grid.ColumnSpan="5" Margin="0,5"/>
+                        <StackPanel Grid.Row="5" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Margin="0,5" Orientation="Horizontal">
+                            <Button x:Name="gradientColorListViewAddButton" Content="添加" Width="95"
+                                    Click="GradientColorListViewAddButton_Click"/>
+                            <Button x:Name="gradientColorListViewDeleteButton" Content="删除" Width="95" Margin="10,0,0,0"
+                                    Click="GradientColorListViewDeleteButton_Click"/>
+                        </StackPanel>
+                        <ListView x:Name="gradientColorListView" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,5" BorderBrush="Black" BorderThickness="0,1,0,0" Grid.Row="6" Grid.ColumnSpan="5">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="50"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Height="10" BorderBrush="Black" BorderThickness="1">
+                                            <Rectangle Fill="{Binding ColorBrush}"/>
+                                        </Border>
+                                        <TextBlock Text="相对位置" Grid.Column="2"/>
+                                        <TextBlock Text="{Binding OffsetString}" Grid.Column="3" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="commonColorPickerConfirm" Grid.Column="0" HorizontalAlignment="Stretch" Content="确认"
+                        Click="CommonColorPickerConfirm_Click"/>
+                <Button x:Name="commonColorPickerCancel" Grid.Column="2" HorizontalAlignment="Stretch" Content="取消"
+                        Click="CommonColorPickerCancel_Click"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

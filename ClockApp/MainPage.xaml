@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="ClockApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClockApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    SizeChanged="Page_SizeChanged">
+
+    <Grid>
+        <controls:NavigationView x:Name="navi" IsBackButtonVisible="Collapsed" OpenPaneLength="200" IsPaneOpen="False" PaneDisplayMode="Auto" Margin="0,-1,0,0" ExpandedModeThresholdWidth="1280"
+                                 SelectionChanged="NavigationView_SelectionChanged">
+            <controls:NavigationView.MenuItems>
+                <controls:NavigationViewItem x:Name="clockPage" Icon="Clock" Content="时钟"/>
+                <controls:NavigationViewItem x:Name="weatherPage" Content="天气预报">
+                    <controls:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE753;"/>
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+                <controls:NavigationViewItem x:Name="reminderPage" Content="提醒">
+                    <controls:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA8F;" />
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+                <controls:NavigationViewItem x:Name="timerPage" Content="秒表" RenderTransformOrigin="0.5,0.5">
+                    <controls:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+                <controls:NavigationViewItem x:Name="countdownPage" Content="倒计时">
+                    <controls:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Wingdings" Glyph="6" FontWeight="Black" RenderTransformOrigin="0.5,0.5">
+                            <FontIcon.RenderTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </FontIcon.RenderTransform>
+                        </FontIcon>
+                    </controls:NavigationViewItem.Icon>
+                </controls:NavigationViewItem>
+            </controls:NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" />
+        </controls:NavigationView>
+    </Grid>
+</Page>

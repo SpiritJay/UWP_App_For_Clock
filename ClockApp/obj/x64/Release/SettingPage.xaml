@@ -1,0 +1,154 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="ClockApp.SettingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClockApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:Custom="using:Windows.Globalization.NumberFormatting"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="设置" Style="{StaticResource TitleTextBlockStyle}" Margin="20"/>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid CornerRadius="10" RowSpacing="5" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="保持屏幕常亮" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,10,0,0"/>
+                    <ToggleSwitch x:ConnectionId='10' Name="keepDisplayToggle" Grid.Column="1" Grid.RowSpan="2" MinWidth="86" Margin="0,5" VerticalAlignment="Top"
+                                                                     />
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Margin="30,0,0,12" TextWrapping="WrapWholeWords"
+                               Text="此项开启后请留意电脑的耗电量"/>
+                </Grid>
+                <Grid CornerRadius="10" RowSpacing="5" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="整点提醒" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,10,0,0"/>
+                    <ToggleSwitch x:ConnectionId='9' Name="clockPageHourlyReminderToggle" Grid.Column="1" Grid.RowSpan="2" MinWidth="86" Margin="0,5" VerticalAlignment="Top"                                                           />
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Margin="30,0,0,12" TextWrapping="WrapWholeWords"
+                               Text="此项开启后会使得时钟页在整点时发出钟声（不影响其他页面的提醒项铃声）"/>
+                </Grid>
+                <Grid CornerRadius="10" RowSpacing="5" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="本地多图片切换间隔" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,10,0,0"/>
+                    <StackPanel Grid.Column="1" Grid.RowSpan="2" Width="135" Margin="12" Orientation="Horizontal" VerticalAlignment="Top">
+                        <controls:NumberBox x:ConnectionId='8' Width="116" Minimum="3"
+                                                                                                                                              >
+                            <controls:NumberBox.NumberFormatter>
+                                <Custom:DecimalFormatter FractionDigits="0"/>
+                            </controls:NumberBox.NumberFormatter>
+                        </controls:NumberBox>
+                        <TextBlock Text="秒" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Margin="30,0,0,12" TextWrapping="WrapWholeWords"
+                               Text="此参数以秒为单位，调整此参数可以调整时钟页多图切换时每一张图片的时间间隔"/>
+                </Grid>
+                <Grid CornerRadius="10" RowSpacing="5" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="必应图片缓存天数" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,10,0,0"/>
+                    <StackPanel Grid.Column="1" Grid.RowSpan="2" Width="135" Margin="12" Orientation="Horizontal" VerticalAlignment="Top">
+                        <controls:NumberBox x:ConnectionId='7' Width="116" Minimum="3"
+                                                                                                                                                 >
+                            <controls:NumberBox.NumberFormatter>
+                                <Custom:DecimalFormatter FractionDigits="0"/>
+                            </controls:NumberBox.NumberFormatter>
+                        </controls:NumberBox>
+                        <TextBlock Text="天" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Margin="30,0,0,12" TextWrapping="WrapWholeWords"
+                               Text="此参数以天为单位，调整此参数可以调整必应图片的缓存中的停留时间（每张图片包含一份图片描述文档）"/>
+                </Grid>
+                <Grid CornerRadius="10" RowSpacing="5" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="提醒页静音" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,10,0,0"/>
+                    <ToggleSwitch x:ConnectionId='6' Name="reminderPageMutedToggle" Grid.Column="1" Grid.RowSpan="2" MinWidth="86" Margin="0,5" VerticalAlignment="Top"                                                  />
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Margin="30,0,0,12" TextWrapping="WrapWholeWords"
+                               Text="此项开启后会使得提醒页的所有提醒项铃声静音（但不影响其他页面的提醒项铃声）"/>
+                </Grid>
+                <Grid CornerRadius="10" RowSpacing="5" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="提醒页排序优先级" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,10,0,0"/>
+                    <ComboBox x:ConnectionId='5' x:Name="sortComboBox" Grid.Column="1" Grid.RowSpan="2" Width="135" Margin="12" VerticalAlignment="Top"
+                                                                                       
+                                                                              />
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Margin="30,0,0,12" TextWrapping="WrapWholeWords"
+                               Text="此项开启后会使得提醒页的所有提醒项铃声静音（但不影响其他页面的提醒项铃声）"/>
+                </Grid>
+
+                <Grid CornerRadius="10" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="数据文档存储位置" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Margin="30,12,0,0"/>
+                    <HyperlinkButton x:ConnectionId='3' x:Name="dataFileFolderLink" Grid.Row="1" Margin="30,6,30,12"
+                                                                     >
+                        <TextBlock x:ConnectionId='4' x:Name="dataFileFolderLinkContent" TextWrapping="Wrap"/>
+                    </HyperlinkButton>
+                </Grid>
+                <Grid CornerRadius="10" Height="Auto" HorizontalAlignment="Stretch" BorderBrush="LightGray" BorderThickness="1,0.5,1,2" Margin="20,10">
+                    <StackPanel Margin="30,12">
+                        <TextBlock Text="关于" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,5"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="版本："/>
+                            <TextBlock x:ConnectionId='2'                                              FontWeight="Bold"/>
+                        </StackPanel>
+                        <TextBlock Text="软件作者：P Jay" Margin="0,5"/>
+                        <TextBlock Text="联系方式：pjj739727907@sina.cn" Margin="0,5"/>
+                        <TextBlock Text="制作不易，请多体谅 ^_^" Margin="0,5" FontStyle="Italic"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
+

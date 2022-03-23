@@ -1,8 +1,9 @@
 # IDE
->Visual Studio
+>Visual Studio 2022
 # 适用平台
 >目标版本：Windows 10，version 2004（19041）  
->最低版本：Windows 10，version 1903（18362）
+>最低版本：Windows 10，version 1903（18362）  
+>在x64上开发
 # 功能
 >## 时钟
 >>圆形钟表形式和数字形式显示时间，背景图支持网络图片（必应搜索背景和Unsplash）和本地（多图、单图、纯色、渐变色）
@@ -15,6 +16,10 @@
 >## 倒计时
 >>倒计时
 # 账号密码文件
->WeatherAPIIdAndSecret.xml  
->`<API ID="******" Secret="******"/>`  
+>文件名称 WeatherAPIIdAndSecret.xml  
+>文件内容  
+>>```xml
+>><?xml version="1.0" encoding="utf-8" ?>
+>><API ID="******" Secret="******"/>
+>>```  
 >账号密码自行申请[https://www.tianqiapi.com/index/doc?version=v1](https://www.tianqiapi.com/index/doc?version=v1)

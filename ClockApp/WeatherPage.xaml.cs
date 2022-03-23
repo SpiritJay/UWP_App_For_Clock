@@ -88,8 +88,8 @@ namespace ClockApp
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    Common.singleDayWeatherTotalString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v6&appid=&appsecret=&cityid={0}", Common.cityId)));
-                    Common.sevenDaysWeatherTotalString  = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v1&appid=&appsecret=&cityid={0}", Common.cityId)));//四会101280903
+                    Common.singleDayWeatherTotalString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v6&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));
+                    Common.sevenDaysWeatherTotalString  = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v1&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));//四会101280903
                     //标注刷新时间
                     refreshTimeTextBlock.Text = DateTime.Now.ToString("t");
                 }
@@ -572,7 +572,7 @@ namespace ClockApp
             GetNowSevenDaysWeatherTotalDataString();
             TranslateStringArrayToNumberArrayAndOther(sevenDaysTemperatureString);
             
-            sevenDaysTemperatrueLinesDisplayGrid.Height = new GridLength(150 + 10 * SevenDaysTemperatureInstance);
+            sevenDaysTemperatrueLinesDisplayGrid.Height = new GridLength(88 + 10 * SevenDaysTemperatureInstance);
             SetTheSevenDaysTextBlocks();
             SetTheSevenDaysBezierPoints();
             SetTheSevenDaysColors();

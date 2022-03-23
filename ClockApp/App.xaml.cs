@@ -105,6 +105,8 @@ namespace ClockApp
         /// 城市代码字符串
         /// </summary>
         public static string cityId = "101280903";//sihui
+        public static string appid = string.Empty;
+        public static string appsecret = string.Empty;
         /// <summary>
         /// 实况天气总的信息字符串
         /// </summary>

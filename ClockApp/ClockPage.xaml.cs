@@ -486,14 +486,14 @@ namespace ClockApp
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    string temperatureString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v6&appid=&appsecret=&cityid={0}", Common.cityId)));
+                    string temperatureString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v6&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));
                     Common.singleDayWeatherTotalString = temperatureString;
                     var stringList = temperatureString.Split('\"');
                     temperatureLocationTextBlock.Text = stringList[19];
                     temperatureTextBlockWea.Text = stringList[35];
                     temperatureTextBlockReal.Text = stringList[43];
 
-                    Common.sevenDaysWeatherTotalString = temperatureString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v1&appid=&appsecret=&cityid={0}", Common.cityId)));//四会101280903
+                    Common.sevenDaysWeatherTotalString = temperatureString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v1&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));//四会101280903
                     stringList = temperatureString.Split('\"');
                     temperatureTextBlockTem1.Text = stringList[69].Replace("℃", "");
                     temperatureTextBlockTem2.Text = stringList[73].Replace("℃", "");

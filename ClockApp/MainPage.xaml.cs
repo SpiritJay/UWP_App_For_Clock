@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Xml;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -166,6 +167,11 @@ namespace ClockApp
 
         private async void LoadDataFromFile()
         {
+            StorageFile secretFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/User/XMLData/WeatherAPIIdAndSecret.xml"));
+            XmlDocument secretXml = new XmlDocument();
+            secretXml.Load(new StreamReader(await secretFile.OpenStreamForReadAsync()));
+            Common.appid = secretXml.SelectSingleNode("/API").Attributes["ID"].Value;
+            Common.appsecret = secretXml.SelectSingleNode("/API").Attributes["Secret"].Value;
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             IStorageItem settingPageFile = await folder.TryGetItemAsync("SettingPageInformation.txt");
             if (settingPageFile == null)

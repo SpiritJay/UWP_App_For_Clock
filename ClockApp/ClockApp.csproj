@@ -209,6 +209,7 @@
     <Content Include="Assets\User\PNGIcon\渐变色.png" />
     <Content Include="Assets\User\WAVMedia\Alarm.wav" />
     <Content Include="Assets\User\WAVMedia\ClockAlarm.wav" />
+    <Content Include="Assets\User\XMLData\WeatherAPIIdAndSecret.xml" />
     <Content Include="Assets\User\XMLData\WeatherCitiesData.xml" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />

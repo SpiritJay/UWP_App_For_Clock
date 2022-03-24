@@ -1,6 +1,0 @@
-MainPackage=E:\vsproject\ClockApp\ClockApp\bin\x64\Release\ClockApp_1.3.7.0_x64.msix
-SymbolPackage=E:\vsproject\ClockApp\ClockApp\obj\x64\Release\Symbols\ClockApp_1.3.7.0_x64.appxsym
-ResourcePack=E:\vsproject\ClockApp\ClockApp\bin\x64\Release\ClockApp_1.3.7.0_scale-100.msix
-ResourcePack=E:\vsproject\ClockApp\ClockApp\bin\x64\Release\ClockApp_1.3.7.0_scale-125.msix
-ResourcePack=E:\vsproject\ClockApp\ClockApp\bin\x64\Release\ClockApp_1.3.7.0_scale-150.msix
-ResourcePack=E:\vsproject\ClockApp\ClockApp\bin\x64\Release\ClockApp_1.3.7.0_scale-400.msix

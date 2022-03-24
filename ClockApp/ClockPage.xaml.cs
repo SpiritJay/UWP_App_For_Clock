@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Windows.Foundation;
@@ -124,12 +125,14 @@ namespace ClockApp
                     _headline = infoString.Split("\"headline\">").Last().Split('<')[0];
                     _copyright = infoString.Split("\"copyright\">").Last().Split('<')[0];
                     _description = infoString.Split("\"Description\":\"")[1].Split('\"')[0];
+                    _description = Regex.Unescape(_description);
                     break;
                 case WebImageFrom.unsplash:
                     _title = "相机型号";
                     _headline = "Unsplash每日一图";
                     _copyright = "by " + infoString.Split("class=\"yzAnJ\"")[1].Split("</a>")[0].Split('>').Last();
                     _description = infoString.Contains("span class=\"Yhept\">") ? infoString.Split("span class=\"Yhept\">").Last().Split("<div")[0] : "无相机";
+                    _description = Regex.Unescape(_description);
                     break;
                 case WebImageFrom.nothing:
                     break;
@@ -1121,7 +1124,7 @@ namespace ClockApp
                         using (HttpClient http = new HttpClient())
                         {
                             htmlIncludeInfo = await http.GetStringAsync(new Uri(uriFirstString));
-                            html = htmlIncludeInfo.Split("\"Description\":\"")[1].Split('\"')[6].Replace(@"\u0026", "\u0026").Replace("s.cn.bing.net", "cn.bing.com");
+                            html = htmlIncludeInfo.Split("\"Description\":\"")[1].Split('\"')[6].Replace("s.cn.bing.net", "cn.bing.com");
                         }
                     }
                     catch (Exception)
@@ -1148,6 +1151,7 @@ namespace ClockApp
                 default:
                     break;
             }
+            html = Regex.Unescape(html);
             if (html == string.Empty)
                 return null;
             return await GetLocalFolderImage(html) ?? await GetHttpImage(html, htmlIncludeInfo);

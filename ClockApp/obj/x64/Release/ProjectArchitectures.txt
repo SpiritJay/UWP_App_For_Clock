@@ -1,1 +1,0 @@
-E:\vsproject\ClockApp\ClockApp\ClockApp.csproj;x64

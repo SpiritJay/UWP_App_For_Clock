@@ -565,10 +565,12 @@ namespace ClockApp
             if (clockDialGrid.Visibility == Visibility.Visible)
             {
                 clockDialGridStoryOut.Begin();
+                numDialGridPositionSwitch.IsEnabled = true;
             }
             else
             {
                 clockNumGridStoryOut.Begin();
+                numDialGridPositionSwitch.IsEnabled = false;
             }
         }
 
@@ -1459,6 +1461,22 @@ namespace ClockApp
         private async void WebPhotoHyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
             _ = await Launcher.LaunchUriAsync(new Uri((((sender as HyperlinkButton).Content as StackPanel).Children[1] as TextBlock).Text));
+        }
+
+        private void NumDialGridPositionSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            if (clockNumGrid.HorizontalAlignment == HorizontalAlignment.Center)
+            {
+                clockNumGrid.HorizontalAlignment = HorizontalAlignment.Left;
+                clockNumGrid.VerticalAlignment = VerticalAlignment.Bottom;
+                clockNumGrid.Margin = new Thickness(20, 0, 0, 20);
+            }
+            else
+            {
+                clockNumGrid.HorizontalAlignment = HorizontalAlignment.Center;
+                clockNumGrid.VerticalAlignment = VerticalAlignment.Center;
+                clockNumGrid.Margin = new Thickness(0, 0, 0, 0);
+            }
         }
     }
 }

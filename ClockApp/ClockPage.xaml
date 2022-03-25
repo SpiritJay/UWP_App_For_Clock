@@ -297,6 +297,12 @@
             <Setter Property="Opacity" Value="0"/>
         </Style>
         <MenuFlyout x:Key="clockPageOperationFlyout" Placement="TopEdgeAlignedRight">
+            <MenuFlyoutItem x:Name="numDialGridPositionSwitch" Text="切换显示位置"
+                            Click="NumDialGridPositionSwitch_Click">
+                <MenuFlyoutItem.Icon>
+                    <SymbolIcon Symbol="Switch"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
             <MenuFlyoutItem x:Name="numOrDialSwitch" Text="切换视图"
                             Click="NumOrDialSwitch_Click">
                 <MenuFlyoutItem.Icon>
@@ -1874,6 +1880,9 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Background="Transparent" Margin="0,0,20,20">
             <Button x:Name="clockPageWebBackgroundInfoButton" Margin="5,0" Visibility="Collapsed"
                     Click="ClockPageWebBackgroundInfoButton_Click">
+                <Button.Background>
+                    <AcrylicBrush BackgroundSource="Backdrop" FallbackColor="White" TintOpacity="0.2" TintColor="White" TintLuminosityOpacity="0.5"/>
+                </Button.Background>
                 <Grid ColumnSpacing="5" Margin="4,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -1890,10 +1899,16 @@
             </Button>
             <Button x:Name="clockPageOperationCollectionButton" Height="44.8" Flyout="{StaticResource clockPageOperationFlyout}"
                     Click="ClockPageOperationCollectionButton_Click">
+                <Button.Background>
+                    <AcrylicBrush BackgroundSource="Backdrop" FallbackColor="White" TintOpacity="0.2" TintColor="White" TintLuminosityOpacity="0.5"/>
+                </Button.Background>
                 <SymbolIcon Symbol="More"/>
             </Button>
         </StackPanel>
-        <StackPanel x:Name="clockPageWebBackgroundInfoStackPanel" Background="#BFFFFFFF" Padding="20,10,20,16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,74.8" Width="300" CornerRadius="4" Visibility="Collapsed">
+        <StackPanel x:Name="clockPageWebBackgroundInfoStackPanel" Padding="20,10,20,16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,74.8" Width="300" CornerRadius="4" Visibility="Collapsed">
+            <StackPanel.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" FallbackColor="White" TintOpacity="0.2" TintColor="White" TintLuminosityOpacity="0.5"/>
+            </StackPanel.Background>
             <TextBlock x:Name="webPhotoTitle" FontSize="30" FontWeight="Bold" Foreground="Black" TextWrapping="Wrap"/>
             <Line Stroke="Black" StrokeThickness="3" X1="0" X2="260" Y1="0" Y2="0" HorizontalAlignment="Center" Margin="0,10"/>
             <TextBlock x:Name="webPhotoDescription" FontSize="16" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>

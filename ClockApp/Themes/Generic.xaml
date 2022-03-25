@@ -13,7 +13,7 @@
                 <ControlTemplate TargetType="local:CustomProgressRing">
                     <Grid Background="{TemplateBinding Background}">
                         <!-- Gray outline of progress bar -->
-                        <Path Fill="Transparent" Stroke="{TemplateBinding Outline}" StrokeThickness="{TemplateBinding Thickness}" StrokeDashCap="Flat">
+                        <Path Fill="Transparent" Stroke="{TemplateBinding Outline}" StrokeThickness="{TemplateBinding Thickness}">
                             <Path.Data>
                                 <PathGeometry>
                                     <PathGeometry.Figures>

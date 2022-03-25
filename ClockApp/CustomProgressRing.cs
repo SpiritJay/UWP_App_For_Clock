@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
+// Consult https://github.com/windows-toolkit/WindowsCommunityToolkit/tree/rel/7.1.0/Microsoft.Toolkit.Uwp.UI.Controls.Core/RadialProgressBar
 
 namespace ClockApp
 {
@@ -131,7 +132,6 @@ namespace ClockApp
         /// <param name="e"></param>
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
             var ob = d as CustomProgressRing;
             ob.UpdateSegment();
         }
@@ -164,7 +164,6 @@ namespace ClockApp
             {
                 SetValue(MinValueProperty, Math.Min(MaxValue, value));
                 Value = Math.Max(Value, value);
-                //SetValue(ValueProperty, Math.Max(Value, value));
             }
         }
 
@@ -181,7 +180,6 @@ namespace ClockApp
         /// <param name="e"></param>
         private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
             var ob = d as CustomProgressRing;
             ob.UpdateSegment();
         }
@@ -196,7 +194,6 @@ namespace ClockApp
             {
                 SetValue(MaxValueProperty, Math.Max(MinValue, value));
                 Value = Math.Min(Value, MaxValue);
-                //SetValue(ValueProperty, Math.Min(Value, MaxValue));
             }
         }
 
@@ -213,9 +210,58 @@ namespace ClockApp
         /// <param name="e"></param>
         private static void OnMaxValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
             var ob = d as CustomProgressRing;
             ob.UpdateSegment();
+        }
+
+        /// <summary>
+        /// 线段开始端点形状
+        /// </summary>
+        public PenLineCap StartLineCap
+        {
+            get { return (PenLineCap)GetValue(StartLineCapProperty); }
+            set { SetValue(StartLineCapProperty, value); }
+        }
+
+        /// <summary>
+        /// StartLineCap的依赖属性
+        /// </summary>
+        public static readonly DependencyProperty StartLineCapProperty =
+            DependencyProperty.Register("StartLineCap", typeof(PenLineCap), typeof(CustomProgressRing), new PropertyMetadata(PenLineCap.Round, OnStartLineCapChanged));
+
+        /// <summary>
+        /// StartLineCap值改变时发生
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void OnStartLineCapChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 线段结束端点形状
+        /// </summary>
+        public PenLineCap EndLineCap
+        {
+            get { return (PenLineCap)GetValue(EndLineCapProperty); }
+            set { SetValue(EndLineCapProperty, value); }
+        }
+
+        /// <summary>
+        /// EndLineCap的依赖属性
+        /// </summary>
+        public static readonly DependencyProperty EndLineCapProperty =
+            DependencyProperty.Register("EndLineCap", typeof(PenLineCap), typeof(CustomProgressRing), new PropertyMetadata(PenLineCap.Round, OnEndLineCapChanged));
+
+        /// <summary>
+        /// EndLineCap值改变时发生
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void OnEndLineCapChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
         }
 
         /// <summary>

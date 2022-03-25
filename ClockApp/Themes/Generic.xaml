@@ -1,3 +1,4 @@
+<!--Consult https://github.com/windows-toolkit/WindowsCommunityToolkit/tree/rel/7.1.0/Microsoft.Toolkit.Uwp.UI.Controls.Core/RadialProgressBar-->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -31,7 +32,7 @@
                             </Path.Data>
                         </Path>
                         <!-- Progress Bar -->
-                        <Path Fill="Transparent" Stroke="{TemplateBinding Foreground}" StrokeThickness="{TemplateBinding Thickness}" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                        <Path Fill="Transparent" Stroke="{TemplateBinding Foreground}" StrokeThickness="{TemplateBinding Thickness}" StrokeStartLineCap="{TemplateBinding StartLineCap}" StrokeEndLineCap="{TemplateBinding EndLineCap}">
                             <Path.Data>
                                 <PathGeometry>
                                     <PathGeometry.Figures>

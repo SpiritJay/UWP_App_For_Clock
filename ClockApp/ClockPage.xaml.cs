@@ -768,7 +768,7 @@ namespace ClockApp
                 case 2:
                 case 3:
                 case 4:
-                    clockPageWebBackgroundInfoButton.Visibility = clockPageWebBackgroundInfoStackPanel.Visibility = Visibility.Collapsed;
+                    clockPageWebBackgroundInfoButton.Visibility = clockPageWebBackgroundInfoGrid.Visibility = Visibility.Collapsed;
                     break;
                 case 5:
                 case 6:
@@ -889,8 +889,8 @@ namespace ClockApp
 
         private void ClockPageWebBackgroundInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            clockPageWebBackgroundInfoStackPanel.Visibility =
-                clockPageWebBackgroundInfoStackPanel.Visibility == Visibility.Visible ?
+            clockPageWebBackgroundInfoGrid.Visibility =
+                clockPageWebBackgroundInfoGrid.Visibility == Visibility.Visible ?
                 Visibility.Collapsed : Visibility.Visible;
         }
 

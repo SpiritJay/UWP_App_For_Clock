@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -11,16 +10,12 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System.Display;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
@@ -130,7 +125,7 @@ namespace ClockApp
         /// </summary>
         public static uint clockPageBingPhotosCacheNum = 10;
 
-        
+
         public static XmlDocument TranslateTheStringToXml(string str)
         {
             XmlDocument xml = new XmlDocument();
@@ -215,8 +210,8 @@ namespace ClockApp
                     {
                         //if (openedNode.Last().Name != titleList[0])
                         //{
-                            //openedNode.Last().SetAttribute(strList[i - 1].Split(',')[1], strList[i].Split(',')[0].Replace("}", "").Replace("]", ""));
-                            openedNode.Add(xml.CreateElement(titleList[0]));
+                        //openedNode.Last().SetAttribute(strList[i - 1].Split(',')[1], strList[i].Split(',')[0].Replace("}", "").Replace("]", ""));
+                        openedNode.Add(xml.CreateElement(titleList[0]));
                         //}
 
                         nextNode.Add(titleList[0]);
@@ -271,7 +266,7 @@ namespace ClockApp
             foreach (var enumValue in enumList)
             {
                 FieldInfo field = enumValue.GetType().GetField(enumValue.ToString());
-                object[] objects =  field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                object[] objects = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
                 DescriptionAttribute descriptionAttribute = (DescriptionAttribute)objects[0];
                 resultList.Add(descriptionAttribute.Description);
             }
@@ -322,7 +317,7 @@ namespace ClockApp
                 DescriptionAttribute descriptionAttribute = (DescriptionAttribute)objects[0];
                 return descriptionAttribute.Description;
             }
-            
+
         }
 
         public static List<string> BuildTheStorgeListOfReminderList()
@@ -395,7 +390,7 @@ namespace ClockApp
                 for (int i = 0; i < itemsCount; i++)
                 {
                     ReminderListItem item = new ReminderListItem();
-                    
+
                     int subItemsCount = 0;
                     if (list[index] == "[ReminderListItem]")
                     {
@@ -541,7 +536,7 @@ namespace ClockApp
                 Common.keepDisplay.RequestRelease();
             Common.mainTimer.Stop();
             StorageDataToFile(deferral);
-            
+
         }
 
         private async void StorageDataToFile(SuspendingDeferral deferral)
@@ -556,7 +551,7 @@ namespace ClockApp
                 //create new file
                 StorageFile file = await folder.CreateFileAsync("SettingPageInformation.txt", CreationCollisionOption.ReplaceExisting);
                 resultOfSet = FileIO.WriteLinesAsync(file, new List<string>
-                { 
+                {
                     "[Common.isKeepDisplayActived]", Common.isKeepDisplayActived.ToString(), "[.Common.isKeepDisplayActived]",
                     "[Common.isHourlyReminder]", Common.isHourlyReminder.ToString(), "[.Common.isHourlyReminder]",
                     "[Common.clockPagePhotosChangeNum]", Common.clockPagePhotosChangeNum.ToString(), "[.Common.clockPagePhotosChangeNum]",
@@ -570,7 +565,7 @@ namespace ClockApp
                 //storge the data to file
                 StorageFile file = await folder.GetFileAsync("SettingPageInformation.txt");
                 resultOfSet = FileIO.WriteLinesAsync(file, new List<string>
-                { 
+                {
                     "[Common.isKeepDisplayActived]", Common.isKeepDisplayActived.ToString(), "[.Common.isKeepDisplayActived]",
                     "[Common.isHourlyReminder]", Common.isHourlyReminder.ToString(), "[.Common.isHourlyReminder]",
                     "[Common.clockPagePhotosChangeNum]", Common.clockPagePhotosChangeNum.ToString(), "[.Common.clockPagePhotosChangeNum]",
@@ -578,7 +573,7 @@ namespace ClockApp
                     "[Common.isMuted]", Common.isMuted.ToString(), "[.Common.isMuted]",
                     "[Common.nowWhoFirst]", ((int)Common.nowWhoFirst).ToString(), "[.Common.nowWhoFirst]"
                 });
-                
+
             }
 
             IStorageItem clockPageFile = await folder.TryGetItemAsync("ClockPageInformation.txt");
@@ -663,14 +658,14 @@ namespace ClockApp
                 }
                 resultOfClock = FileIO.WriteLinesAsync(file, writeList);
             }
-            
+
 
             IStorageItem reminderPageFile = await folder.TryGetItemAsync("ReminderPageInformation.txt");
             if (reminderPageFile == null)
             {
                 //create the file
                 StorageFile file = await folder.CreateFileAsync("ReminderPageInformation.txt", CreationCollisionOption.ReplaceExisting);
-                resultOfReminder =  FileIO.WriteLinesAsync(file, new List<string> { "[Common.reminderList]", "0", "[.Common.reminderList]" });
+                resultOfReminder = FileIO.WriteLinesAsync(file, new List<string> { "[Common.reminderList]", "0", "[.Common.reminderList]" });
             }
             else
             {

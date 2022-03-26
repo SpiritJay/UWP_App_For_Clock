@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Security.Cryptography;
@@ -20,13 +18,11 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -651,7 +647,7 @@ namespace ClockApp
         {
             backgroundChange.IsEnabled = false;
             numOrDialSwitch.IsEnabled = false;
-            
+
             gradientColorPartGrid.Visibility = Visibility.Collapsed;
             commonColorPickerInAnimation.FromHorizontalOffset = 354.4;
             commonColorPickerOutAnimation.FromHorizontalOffset = -354.4;
@@ -664,7 +660,7 @@ namespace ClockApp
         {
             backgroundChange.IsEnabled = false;
             numOrDialSwitch.IsEnabled = false;
-            
+
             startPointX.IsEnabled = true;
             startPointY.IsEnabled = true;
             endPointX.IsEnabled = true;
@@ -679,7 +675,7 @@ namespace ClockApp
 
         private async void PhotoBackground_Click(object sender, RoutedEventArgs e)
         {
-            
+
             var picker = new FileOpenPicker
             {
                 ViewMode = PickerViewMode.Thumbnail,
@@ -796,7 +792,7 @@ namespace ClockApp
                 clockPageGrid.Background = newBackground.Background = new SolidColorBrush(commonColorPicker.Color);
                 Common.clockPageNowBackgroundBrush = clockPageGrid.Background;
                 commonColorPickerStackPanel.Margin = new Thickness(0, 0, -354.4, 0);
-                
+
                 Common.markOfChangeMode = 1;
             }
             else
@@ -893,7 +889,7 @@ namespace ClockApp
 
         private void ClockPageWebBackgroundInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            clockPageWebBackgroundInfoStackPanel.Visibility = 
+            clockPageWebBackgroundInfoStackPanel.Visibility =
                 clockPageWebBackgroundInfoStackPanel.Visibility == Visibility.Visible ?
                 Visibility.Collapsed : Visibility.Visible;
         }
@@ -926,7 +922,7 @@ namespace ClockApp
 
                             webPhotoHeadline.Text = bingImage.Headline;
                             webPhotoTitle.Text = bingImage.Title;
-                                webPhotoDescription.Text = bingImage.Description;
+                            webPhotoDescription.Text = bingImage.Description;
                             webPhotoCopyright.Text = bingImage.Copyright;
                             StorageFile tempFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/User/PNGIcon/必应图标.png"));
                             using (IRandomAccessStream stream = await tempFile.OpenAsync(FileAccessMode.Read))
@@ -1273,7 +1269,7 @@ namespace ClockApp
                 {
                     buffer = await http.GetBufferAsync(new Uri(htmlString));
                 }
-                
+
                 BitmapImage img = new BitmapImage();
                 using (IRandomAccessStream stream = new InMemoryRandomAccessStream())
                 {

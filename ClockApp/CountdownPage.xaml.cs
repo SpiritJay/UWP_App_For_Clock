@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -113,7 +104,7 @@ namespace ClockApp
                 else if (args.NewValue == 60)
                     sender.Value = 0;
                 startOrPauseCountdownButton.IsEnabled = !(hourNumSetBox.Value == 0 && minuteNumSetBox.Value == 0 && secondNumSetBox.Value == 0);
-            }    
+            }
         }
 
         private void SecondNumSetBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
@@ -125,7 +116,7 @@ namespace ClockApp
                 else if (args.NewValue == 60)
                     sender.Value = 0;
                 startOrPauseCountdownButton.IsEnabled = !(hourNumSetBox.Value == 0 && minuteNumSetBox.Value == 0 && secondNumSetBox.Value == 0);
-            }   
+            }
         }
 
         private void StartOrPauseCountdownButton_Click(object sender, RoutedEventArgs e)
@@ -164,14 +155,14 @@ namespace ClockApp
                 startOrPauseCountdownButton.Background = new SolidColorBrush(Colors.DarkGreen);
 
                 hourNumSetBox.Visibility = Visibility.Visible;
-                minuteNumSetBox.Visibility= Visibility.Visible;
+                minuteNumSetBox.Visibility = Visibility.Visible;
                 secondNumSetBox.Visibility = Visibility.Visible;
                 hourNumSetBox.Text = hourNumTextBlock.Text;
                 minuteNumSetBox.Text = minuteNumTextBlock.Text;
                 secondNumSetBox.Text = secondNumTextBlock.Text;
                 hourNumTextBlock.Visibility = Visibility.Collapsed;
                 minuteNumTextBlock.Visibility = Visibility.Collapsed;
-                secondNumTextBlock.Visibility= Visibility.Collapsed;
+                secondNumTextBlock.Visibility = Visibility.Collapsed;
             }
         }
 

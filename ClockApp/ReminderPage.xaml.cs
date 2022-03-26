@@ -2,21 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Input;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -59,8 +52,8 @@ namespace ClockApp
             public bool IsChecked
             {
                 get { return isChecked; }
-                set 
-                { 
+                set
+                {
                     isChecked = value;
                     opacity = value ? 1 : 0.3;
                 }
@@ -77,7 +70,7 @@ namespace ClockApp
                 }
             }
         }
-        
+
         /// <summary>
         /// 标示该提醒类型
         /// </summary>
@@ -339,7 +332,7 @@ namespace ClockApp
                     AlarmTimeString = alarmTime.ToString("yyyy/MM/dd") + "        " + alarmTime.ToString("HH:mm");
             }
         }
-        
+
         /// <summary>
         /// 从另一个对象中复制关键的值
         /// </summary>
@@ -648,7 +641,7 @@ namespace ClockApp
                     break;
             }
             if (info.IsOpen) return;
-            
+
             if (newItemTitleTextBlock.Text == "")
             {
                 newItem.TitleString = "无标题";
@@ -659,7 +652,7 @@ namespace ClockApp
             }
             var item = new ReminderListItem(newItem.Classification);
             item.CopyValueFrom(newItem);
-            
+
             if (issueList.SelectedIndex == -1)
             {
                 //create new item
@@ -715,7 +708,7 @@ namespace ClockApp
                 {
                     Common.reminderList.Insert(index, item);
                 }
-                
+
             }
             detailGridOutStory.Begin();
 
@@ -890,7 +883,7 @@ namespace ClockApp
                 {
                     displayToDoCheckBox.IsChecked = true;
                     UpdateItemsDisplay(true);
-                } 
+                }
             }
         }
 
@@ -979,7 +972,7 @@ namespace ClockApp
                             break;
                     }
                 }
-            } 
+            }
         }
 
         private int SortAnReminderItem(ReminderListItem item)
@@ -1025,7 +1018,7 @@ namespace ClockApp
                             break;
                         }
                     }
-                }    
+                }
             }
             return index;
         }

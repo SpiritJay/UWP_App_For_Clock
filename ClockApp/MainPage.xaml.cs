@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -16,13 +14,9 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -55,7 +49,7 @@ namespace ClockApp
         private async void MainPageTimer_Tick(object sender, object e)
         {
             if (Common.needToRemindList.Count > 0 && Common.needToRemindList[0] != alarmedItem &&
-                Common.needToRemindList[0].AlarmTime.Date.CompareTo(DateTime.Today) == 0 && 
+                Common.needToRemindList[0].AlarmTime.Date.CompareTo(DateTime.Today) == 0 &&
                 Common.needToRemindList[0].AlarmTime.TimeOfDay.CompareTo(new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0)) == 0)
             {
                 //开始响闹钟
@@ -161,7 +155,7 @@ namespace ClockApp
                             else nowIndex++;
                         }
                     }
-                }    
+                }
             }
         }
 
@@ -179,7 +173,7 @@ namespace ClockApp
                 //create new file
                 StorageFile file = await folder.CreateFileAsync("SettingPageInformation.txt", CreationCollisionOption.ReplaceExisting);
                 await FileIO.WriteLinesAsync(file, new List<string>
-                { 
+                {
                     "[Common.isKeepDisplayActived]", Common.isKeepDisplayActived.ToString(), "[.Common.isKeepDisplayActived]",
                     "[Common.isHourlyReminder]", Common.isHourlyReminder.ToString(), "[.Common.isHourlyReminder]",
                     "[Common.clockPagePhotosChangeNum]", Common.clockPagePhotosChangeNum.ToString(), "[.Common.clockPagePhotosChangeNum]",
@@ -237,7 +231,7 @@ namespace ClockApp
                 if (vector[vector.IndexOf("[Common.nowWhoFirst]") + 2] == "[.Common.nowWhoFirst]")
                 {
                     Common.nowWhoFirst = (Common.WhoFirstEnum)int.Parse(vector[vector.IndexOf("[Common.nowWhoFirst]") + 1]);
-                } 
+                }
             }
 
             IStorageItem clockPageFile = await folder.TryGetItemAsync("ClockPageInformation.txt");

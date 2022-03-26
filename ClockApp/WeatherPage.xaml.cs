@@ -89,7 +89,7 @@ namespace ClockApp
                 using (HttpClient httpClient = new HttpClient())
                 {
                     Common.singleDayWeatherTotalString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v6&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));
-                    Common.sevenDaysWeatherTotalString  = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v1&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));//四会101280903
+                    Common.sevenDaysWeatherTotalString = await httpClient.GetStringAsync(new Uri(string.Format("https://www.tianqiapi.com/api?unescape=1&version=v1&appid={0}&appsecret={1}&cityid={2}", Common.appid, Common.appsecret, Common.cityId)));//四会101280903
                     //标注刷新时间
                     refreshTimeTextBlock.Text = DateTime.Now.ToString("t");
                 }
@@ -223,7 +223,7 @@ namespace ClockApp
             {
                 singleDayWeatherBigSunIcon.Visibility = Visibility.Visible;
                 singleDayWeatherBigSunRotation.Rotation = (nowTime - sunriseTime.TotalMinutes) * 180.0 / (sunsetTime.TotalMinutes - sunriseTime.TotalMinutes);
-                
+
                 var animation = new DoubleAnimation
                 {
                     EnableDependentAnimation = true,
@@ -267,7 +267,7 @@ namespace ClockApp
                 {
                     singleDayWeatherVisibilityRing.MinValue = 1;
                     singleDayWeatherVisibilityRing.MaxValue = 10;
-                    
+
                     if (parseValue >= 1 && parseValue < 2)
                     {
                         singleDayWeatherVisibilityLevelText.Text = "较差";
@@ -474,11 +474,11 @@ namespace ClockApp
             string hours = node.Attributes["hours"].Value;
             string win = node.Attributes["win"].Value;
             string win_speed = node.Attributes["win_speed"].Value;
-            TimeSpan time = TimeSpan.FromHours(double.Parse(hours.Substring(0,2)));
+            TimeSpan time = TimeSpan.FromHours(double.Parse(hours.Substring(0, 2)));
             Grid result = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
-                RowDefinitions = 
+                RowDefinitions =
                 {
                     new RowDefinition{ Height = GridLength.Auto },
                     new RowDefinition{ Height = GridLength.Auto },
@@ -571,7 +571,7 @@ namespace ClockApp
         {
             GetNowSevenDaysWeatherTotalDataString();
             TranslateStringArrayToNumberArrayAndOther(sevenDaysTemperatureString);
-            
+
             sevenDaysTemperatrueLinesDisplayGrid.Height = new GridLength(88 + 10 * SevenDaysTemperatureInstance);
             SetTheSevenDaysTextBlocks();
             SetTheSevenDaysBezierPoints();
@@ -899,62 +899,98 @@ namespace ClockApp
                 blueRNum[i] *= 0x10;
                 blueBNum[i] *= 0x10;
             }
-        //#FFFFC200 #FF0099FF
+            //#FFFFC200 #FF0099FF
             grid6DayColor.Value = new Color
             {
-                A = 0xFF, R = (byte)(0xFF + redRNum[0]), G = (byte)(0xC2 + redList[0]), B = (byte)redBNum[0]
+                A = 0xFF,
+                R = (byte)(0xFF + redRNum[0]),
+                G = (byte)(0xC2 + redList[0]),
+                B = (byte)redBNum[0]
             };
             grid5DayColor.Value = new Color
             {
-                A = 0xFF, R = (byte)(0xFF + redRNum[1]), G = (byte)(0xC2 + redList[1]), B = (byte)redBNum[1]
+                A = 0xFF,
+                R = (byte)(0xFF + redRNum[1]),
+                G = (byte)(0xC2 + redList[1]),
+                B = (byte)redBNum[1]
             };
             grid4DayColor.Value = new Color
             {
-                A = 0xFF, R = (byte)(0xFF + redRNum[2]), G = (byte)(0xC2 + redList[2]), B = (byte)redBNum[2]
+                A = 0xFF,
+                R = (byte)(0xFF + redRNum[2]),
+                G = (byte)(0xC2 + redList[2]),
+                B = (byte)redBNum[2]
             };
             grid3DayColor.Value = new Color
             {
-                A = 0xFF, R = (byte)(0xFF + redRNum[3]), G = (byte)(0xC2 + redList[3]), B = (byte)redBNum[3]
+                A = 0xFF,
+                R = (byte)(0xFF + redRNum[3]),
+                G = (byte)(0xC2 + redList[3]),
+                B = (byte)redBNum[3]
             };
             grid2DayColor.Value = new Color
             {
-                A = 0xFF, R = (byte)(0xFF + redRNum[4]), G = (byte)(0xC2 + redList[4]), B = (byte)redBNum[4]
+                A = 0xFF,
+                R = (byte)(0xFF + redRNum[4]),
+                G = (byte)(0xC2 + redList[4]),
+                B = (byte)redBNum[4]
             };
             grid1DayColor.Value = new Color
             {
-                A = 0xFF, R = (byte)(0xFF + redRNum[5]), G = (byte)(0xC2 + redList[5]), B = (byte)redBNum[5]
+                A = 0xFF,
+                R = (byte)(0xFF + redRNum[5]),
+                G = (byte)(0xC2 + redList[5]),
+                B = (byte)redBNum[5]
             };
 
             grid6NightColor.Value = new Color
             {
-                A = 0xFF, R = (byte)blueRNum[0], G = (byte)(0x99 + blueList[0]), B = (byte)(0xFF - blueBNum[0])
+                A = 0xFF,
+                R = (byte)blueRNum[0],
+                G = (byte)(0x99 + blueList[0]),
+                B = (byte)(0xFF - blueBNum[0])
             };
             grid5NightColor.Value = new Color
             {
-                A = 0xFF, R = (byte)blueRNum[1], G = (byte)(0x99 + blueList[1]), B = (byte)(0xFF - blueBNum[1])
+                A = 0xFF,
+                R = (byte)blueRNum[1],
+                G = (byte)(0x99 + blueList[1]),
+                B = (byte)(0xFF - blueBNum[1])
             };
             grid4NightColor.Value = new Color
             {
-                A = 0xFF, R = (byte)blueRNum[2], G = (byte)(0x99 + blueList[2]), B = (byte)(0xFF - blueBNum[2])
+                A = 0xFF,
+                R = (byte)blueRNum[2],
+                G = (byte)(0x99 + blueList[2]),
+                B = (byte)(0xFF - blueBNum[2])
             };
             grid3NightColor.Value = new Color
             {
-                A = 0xFF, R = (byte)blueRNum[3], G = (byte)(0x99 + blueList[3]), B = (byte)(0xFF - blueBNum[3])
+                A = 0xFF,
+                R = (byte)blueRNum[3],
+                G = (byte)(0x99 + blueList[3]),
+                B = (byte)(0xFF - blueBNum[3])
             };
             grid2NightColor.Value = new Color
             {
-                A = 0xFF, R = (byte)blueRNum[4], G = (byte)(0x99 + blueList[4]), B = (byte)(0xFF - blueBNum[4])
+                A = 0xFF,
+                R = (byte)blueRNum[4],
+                G = (byte)(0x99 + blueList[4]),
+                B = (byte)(0xFF - blueBNum[4])
             };
             grid1NightColor.Value = new Color
             {
-                A = 0xFF, R = (byte)blueRNum[5], G = (byte)(0x99 + blueList[5]), B = (byte)(0xFF - blueBNum[5])
+                A = 0xFF,
+                R = (byte)blueRNum[5],
+                G = (byte)(0x99 + blueList[5]),
+                B = (byte)(0xFF - blueBNum[5])
             };
         }
 
         private void SetTheSevenDaysBezierPoints()
         {
             var basicWidth = sevenDaysDisplayGrid.ActualWidth / 7;
-            double[] points1Or2X = {basicWidth, basicWidth * 2, basicWidth * 3, basicWidth * 4, basicWidth * 5, basicWidth * 6 };
+            double[] points1Or2X = { basicWidth, basicWidth * 2, basicWidth * 3, basicWidth * 4, basicWidth * 5, basicWidth * 6 };
             double[] points3X = new double[6];
             for (int i = 0; i < points1Or2X.Length; i++)
             {

@@ -1269,7 +1269,7 @@ namespace ClockApp
                     height = (int)Math.Ceiling((obj as Shape).Height);
                     break;
                 default:
-                    throw new NullReferenceException("Can't identify the type: " + obj.GetType().BaseType.Name);
+                    throw new NullReferenceException("Can't identify the parent type: " + obj.GetType().BaseType.Name);
             }
 
             byte[] data = new byte[width * height * 4];

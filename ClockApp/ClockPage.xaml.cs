@@ -128,6 +128,7 @@ namespace ClockApp
                     _headline = "Unsplash每日一图";
                     _copyright = "by " + infoString.Split("class=\"yzAnJ\"")[1].Split("</a>")[0].Split('>').Last();
                     _description = infoString.Contains("span class=\"Yhept\">") ? infoString.Split("span class=\"Yhept\">").Last().Split("<div")[0] : "无相机";
+					_description = _description.Contains('<') ? "无相机" : _description;
                     _description = Regex.Unescape(_description);
                     break;
                 case WebImageFrom.nothing:

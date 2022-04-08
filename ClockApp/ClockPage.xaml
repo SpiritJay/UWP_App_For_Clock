@@ -9,7 +9,8 @@
     x:Class="ClockApp.ClockPage"
     mc:Ignorable="d"
     KeyboardAcceleratorPlacementMode="Hidden"
-    Loaded="ClockPage_Loaded">
+    Loaded="ClockPage_Loaded"
+    PreviewKeyDown="Page_PreviewKeyDown">
     <Page.Resources>
         <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="XamlAutoFontFamily"/>
@@ -368,6 +369,18 @@
         <Storyboard x:Name="backgroundChangeStoryboard" Completed="BackgroundChangeStoryboard_Completed">
             <DoubleAnimation Duration="0:0:1.5" Storyboard.TargetName="oldBackground" From="1" To="0" Storyboard.TargetProperty="(UIElement.Opacity)"/>
             <DoubleAnimation Duration="0:0:1.5" Storyboard.TargetName="newBackground" From="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)"/>
+        </Storyboard>
+        <Storyboard x:Name="fullScreenTipStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="fullScreenTipStackPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <!--<EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>-->
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseIn"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
     <Page.KeyboardAccelerators>
@@ -2028,6 +2041,17 @@
                 <Button x:Name="commonColorPickerCancel" Grid.Column="2" HorizontalAlignment="Stretch" Content="取消"
                         Click="CommonColorPickerCancel_Click"/>
             </Grid>
+        </StackPanel>
+
+        <StackPanel x:Name="fullScreenTipStackPanel" Orientation="Horizontal" CornerRadius="12" Opacity="0"
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+            <StackPanel.Background>
+                <AcrylicBrush BackgroundSource="Backdrop" FallbackColor="White" TintOpacity="0.2" TintColor="White" TintLuminosityOpacity="0.5"/>
+            </StackPanel.Background>
+            <Border BorderBrush="Black" BorderThickness="4" CornerRadius="6" Margin="20">
+                <TextBlock Text="esc" FontStyle="Italic" FontWeight="Bold" FontSize="20" Margin="10,0,10,5"/>
+            </Border>
+            <TextBlock Text="退出全屏" FontWeight="Bold" FontSize="20" Margin="0,25,20,25"/>
         </StackPanel>
     </Grid>
 </Page>

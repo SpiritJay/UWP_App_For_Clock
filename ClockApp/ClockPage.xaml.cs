@@ -1451,6 +1451,8 @@ namespace ClockApp
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
                 fullScreenSwitch.Icon = new SymbolIcon(Symbol.FullScreen);
                 fullScreenSwitch.Text = "进入全屏";
+                fullScreenTipStoryboard.Stop();
+                fullScreenTipStackPanel.Opacity = 0;
             }
         }
 
@@ -1472,6 +1474,16 @@ namespace ClockApp
                 clockNumGrid.HorizontalAlignment = HorizontalAlignment.Center;
                 clockNumGrid.VerticalAlignment = VerticalAlignment.Center;
                 clockNumGrid.Margin = new Thickness(0, 0, 0, 0);
+            }
+        }
+
+        private void Page_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (ApplicationView.GetForCurrentView().IsFullScreenMode && e.Key != VirtualKey.Escape
+                && e.Key != VirtualKey.Space && e.Key != VirtualKey.Enter && e.Key != VirtualKey.Tab)
+            {
+                //提示正确的退出全屏方式 stackpanel淡入淡出
+                fullScreenTipStoryboard.Begin();
             }
         }
     }

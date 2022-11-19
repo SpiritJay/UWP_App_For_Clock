@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -126,9 +126,9 @@ namespace ClockApp
                 case WebImageFrom.unsplash:
                     _title = "相机型号";
                     _headline = "Unsplash每日一图";
-                    _copyright = "by " + infoString.Split("class=\"yzAnJ\"")[1].Split("</a>")[0].Split('>').Last();
-                    _description = infoString.Contains("span class=\"Yhept\">") ? infoString.Split("span class=\"Yhept\">").Last().Split("<div")[0] : "无相机";
-					_description = _description.Contains('<') ? "无相机" : _description;
+                    _copyright = "by " + infoString.Split("class=\"N2odk RZQOk eziW_ cl4O9 KHq0c\"")[1].Split("</a>")[0].Split('>').Last();
+                    _description = infoString.Contains(">Camera</desc") ? infoString.Split("span class=\"Yhept\">").Last().Split("<div")[0] : "无相机";
+                    _description = _description.Contains('<') ? "无相机" : _description;
                     _description = Regex.Unescape(_description);
                     break;
                 case WebImageFrom.nothing:
@@ -1137,7 +1137,7 @@ namespace ClockApp
                         using (HttpClient http = new HttpClient())
                         {
                             string tmp = await http.GetStringAsync(new Uri(uriFirstString));
-                            html = uriFirstString + tmp.Split("\">Photo of the Day</a>")[0].Split("href=\"").Last();
+                            html = uriFirstString + tmp.Split("\">Photo</a>")[0].Split("href=\"").Last();
                             htmlIncludeInfo = await http.GetStringAsync(new Uri(html));
                             html = htmlIncludeInfo.Split("srcSet=\"")[2].Split("w=")[0].Replace("amp;", "") + "w=1920&h=1080";
                         }
@@ -1261,6 +1261,7 @@ namespace ClockApp
                         break;
                     case "unsplash":
                         webImage.ImageFrom = WebImage.WebImageFrom.unsplash;
+                        htmlString = htmlString.Replace("https://unsplash.com", "");
                         break;
                     default:
                         break;
